@@ -1,17 +1,17 @@
-import { query } from "./views/base";
+const axios = require("axios");
 
-
-export default class recipes {
+console.log(query)
+export class OneRecipe {
     constructor(query) {
         this.query = query
     }
     async getAPIrecipe(inputID) {
 
         try {
-            this.params.r = inputID;
+            this.query.params.r = inputID;
             const response = await axios(this.query);
             console.log(response);
-            this.responseData = response.data.hits;
+            this.responseData = response.data[0];
             console.log(this.responseData);
         }
         catch (error) {
@@ -21,4 +21,3 @@ export default class recipes {
     }
 }
 
-const searchedRec = new recipes(query); 

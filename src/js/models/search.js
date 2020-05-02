@@ -2,7 +2,7 @@
 
 const axios = require("axios");
 
-export default class recipes {
+export default class AllRecipes {
     constructor(query) {
         this.query = query
     }

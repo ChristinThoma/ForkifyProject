@@ -1,6 +1,7 @@
-import recipe from "./models/search";
+import AllRecipes from "./models/search";
 import { getSearchInput, printRecipesUI, clearSearchField, addRotatingArrow, clearSearchResults } from "./views/searchView"
 import { query } from "./views/base";
+import {OneRecipe} from "./models/recipe"
 
 
 let state = {};
@@ -10,7 +11,7 @@ async function searchController(query, searchInput) {
     console.log(query);
     //1. Get the query/keyword from search field
     //2. Call Imported-object and create search-object in class (search.js)
-    state.allRecipeResults = new recipe(query);
+    state.allRecipeResults = new AllRecipes(query);
     await state.allRecipeResults.getAPIrecipe();
 
     //3. Show results(Object.data) in UI
