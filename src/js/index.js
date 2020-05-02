@@ -1,64 +1,75 @@
 import recipe from "./models/search";
 import { getSearchInput, printRecipesUI, clearSearchField, addRotatingArrow, clearSearchResults } from "./views/searchView"
+import { query } from "./views/base";
 
 
+let state = {};
 
-
-async function searchController(searchInput) {
-
-    let query = {
-        "method": "GET",
-        "url": "https://yummly2.p.rapidapi.com/feeds/search",
-        "headers": {
-            "content-type": "application/octet-stream",
-            "x-rapidapi-host": "yummly2.p.rapidapi.com",
-            "x-rapidapi-key": "b7ac76b9b7msh69a33f600029736p1cd1d9jsn733bcb65bd95"
-        },
-        "params": //this is what you can change as user
-        {
-            // "FAT_KCALMax": "1000",
-            // "maxTotalTimeInSeconds": "7200",
-            "allowedAttribute": "",
-            "q": searchInput,
-            "start": "0",
-            "maxResult": "50"
-        }
-    }
-
+async function searchController(query, searchInput) {
+    query.params.q = searchInput;
+    console.log(query);
     //1. Get the query/keyword from search field
     //2. Call Imported-object and create search-object in class (search.js)
-    const allRecipeResults = new recipe(query);
-    await allRecipeResults.getAPIrecipe();
+    state.allRecipeResults = new recipe(query);
+    await state.allRecipeResults.getAPIrecipe();
 
     //3. Show results(Object.data) in UI
 
-    printRecipesUI(allRecipeResults.responseData);
-    
-
-
-
-
+    printRecipesUI(state.allRecipeResults.responseData);
 };
 
-const button = document.querySelector(".search__btn");
-button.addEventListener("keypress", logKey);
+
 function logKey(e) {
     if (e.keyCode === 13) {
         e.preventDefault();
         startPrint()
     }
 }
-button.addEventListener("click", (e) => {
-    e.preventDefault()
-    startPrint()
 
-})
 
 function startPrint() {
 
     const searchInput = getSearchInput();
     addRotatingArrow();
-    searchController(searchInput);
+    searchController(query, searchInput);
     clearSearchField();
-    
+
 }
+
+
+
+
+function changePage() {
+    printRecipesUI(recipesArr, 2)
+}
+
+function init() {
+
+
+    const button = document.querySelector(".search__btn");
+    button.addEventListener("keypress", logKey);
+    button.addEventListener("click", (e) => {
+        e.preventDefault()
+        startPrint()
+
+    })
+
+    const nextButton = document.querySelector(".results__pages")
+    nextButton.addEventListener("click", log)
+    function log(e) {
+        const target = e.target;
+        const clickElement = target.closest(".btn-inline");
+        if (clickElement) {
+            const btnClassList = Array.from(clickElement.classList);
+            if (btnClassList.includes("results__btn--prev")) {
+                printRecipesUI(state.allRecipeResults.responseData, parseInt(clickElement.dataset.offset) - 1);
+            }
+            else if (btnClassList.includes("results__btn--next")) {
+                printRecipesUI(state.allRecipeResults.responseData, parseInt(clickElement.dataset.offset) + 1);
+
+            }
+        }
+    }
+}
+
+init()
