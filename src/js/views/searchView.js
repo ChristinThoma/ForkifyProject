@@ -44,8 +44,7 @@ function clearSearchResults() {
 
 
 function createHtmlRecipe(rec) {
-    const idRecArr = rec.recipe.uri.split("#recipe_");// split array after recipe to get id
-    const idRec = idRecArr[idRecArr.length - 1];//account last part of the split array
+    const idRec = rec.recipe.uri
     const text = `<li>
     <a class="results__link results__link--active" href=${idRec}
         <figure class="results__fig">
@@ -143,3 +142,4 @@ function addPageButtons(offset, condition) {
 
 }
 
+// Create function to print the recipe you clicked on
