@@ -1,6 +1,5 @@
 const axios = require("axios");
 
-console.log(query)
 export class OneRecipe {
     constructor(query) {
         this.query = query

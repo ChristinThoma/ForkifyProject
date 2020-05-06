@@ -46,7 +46,7 @@ function clearSearchResults() {
 function createHtmlRecipe(rec) {
     const idRec = rec.recipe.uri
     const text = `<li>
-    <a class="results__link results__link--active" href=${idRec}
+    <a class="results__link results__link--active" href=#${idRec} 
         <figure class="results__fig">
             <img src=${rec.recipe.image} alt="Test" width="100" height="100" style="border-radius:50%">
         </figure>
@@ -56,6 +56,7 @@ function createHtmlRecipe(rec) {
         </div>
     </a>
 </li>`
+// We added # at href, because we need it for our hashchange event in index.js, has gives an label to the element which will be shown in addressbar after click
     return text
 }
 
@@ -73,6 +74,10 @@ function shortenDescription(text, limit = 40) {
 
 export function addRotatingArrow() {
     document.querySelector(".results").insertAdjacentHTML("afterbegin", rotatingIcon)
+}
+
+export function addRotatingArrowMainpage(){
+    
 }
 
 
@@ -143,3 +148,4 @@ function addPageButtons(offset, condition) {
 }
 
 // Create function to print the recipe you clicked on
+
