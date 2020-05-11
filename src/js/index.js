@@ -2,7 +2,7 @@ import AllRecipes from "./models/search";
 import { getSearchInput, printRecipesUI, clearSearchField, addRotatingArrow, clearSearchResults } from "./views/searchView"
 import { query } from "./views/base";
 import { OneRecipe } from "./models/recipe";
-import {printRecipe, printIngredients} from "./views/recipeView";
+import { printRecipe, printIngredients, addRotatingArrowMainpage, calNewServings } from "./views/recipeView";
 
 
 let state = {};
@@ -27,6 +27,7 @@ async function recipeController(query, recipeId) {
     queryCopy.params.r = recipeId;
     console.log(query)
     console.log(queryCopy);
+    addRotatingArrowMainpage();
     state.clickedRecipe = new OneRecipe(queryCopy);
     // addRotatingArrow()
     await state.clickedRecipe.getAPIrecipe(recipeId);
@@ -99,7 +100,34 @@ function init() {
         recipeController(query, recipeId)
     }
     )
+    const serving = document.querySelector(".recipe");
+    serving.addEventListener("click", clickHandler)
+    function clickHandler(e) {
+        const target = e.target;
+        const clickElement = target.closest(".btn-tiny");
+        console.log(clickElement);
+        console.log(clickElement.innerHTML)
+        if (clickElement) {
+            let recentServing = document.querySelector(".recipe__info-data--people").innerText;
+            recentServing = parseInt(recentServing);
+            // let operator ;
+            if (clickElement.innerHTML.includes("icon-circle-with-minus")) {
+//change serving one down
+                console.log("minus");
+                calNewServings(recentServing,"-")
+                
+            };
+            if (clickElement.innerHTML.includes("icon-circle-with-plus")) {
+                //change serving one up in recipe view
+                console.log("plus");
+                calNewServings(recentServing, "+")
+
+            }
+        }
+    }
 }
+
+
 
 // Print one-recipe steps
 // add eventListener, cascade to whole recipe element= closest(),(in index)

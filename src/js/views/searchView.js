@@ -33,7 +33,6 @@ export function printRecipesUI(recipesArr, offset = 1, length = 5) {
 
 }
 
-
 function clearSearchResults() {
     let el = document.querySelector(".results__list");
     while (el.firstElementChild) {
@@ -76,9 +75,7 @@ export function addRotatingArrow() {
     document.querySelector(".results").insertAdjacentHTML("afterbegin", rotatingIcon)
 }
 
-export function addRotatingArrowMainpage(){
-    
-}
+
 
 
 function removeArrow() {

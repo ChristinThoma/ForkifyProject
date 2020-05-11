@@ -1,4 +1,8 @@
+import { rotatingIcon } from "./base"
+
 export function printRecipe(recipeData) {
+    clearSearchResults()
+    // removeArrow()
     console.log(recipeData);
     const text = `<figure class="recipe__fig">
     <img src=${recipeData.image} alt=${recipeData.label} class="recipe__img">
@@ -117,6 +121,59 @@ export function printIngredients(recipeData) {
 
         ingredientList = ingredientList + rec;
     }
-    document.querySelector(".recipe__ingredient-list").insertAdjacentHTML("afterbegin", ingredientList)
+    document.querySelector(".recipe__ingredient-list").insertAdjacentHTML("afterbegin", ingredientList);
+    // changeAmount();
 
+}
+
+export function addRotatingArrowMainpage() {
+    document.querySelector(".recipe").insertAdjacentHTML("afterbegin", rotatingIcon)
+}
+
+function removeArrow() {
+    const arrow = document.querySelector(".loader")
+    if (arrow) {
+        arrow.parentNode.removeChild(arrow.parentNode.firstElementChild)
+    }
+}
+
+function clearSearchResults() {
+    let el = document.querySelector(".recipe");
+    while (el.firstElementChild) {
+        console.log("something random");
+        el.removeChild(el.firstElementChild)
+    }
+};
+
+export function calNewServings(recentServing, operator) {
+    let count = document.querySelectorAll(".recipe__count")
+    console.log(Array.from(count));
+    for (let i = 0; i < count.length; i++) {
+        const numberStr = count[i].innerText
+        const splitArr= numberStr.split("/")
+        console.log(splitArr)
+        let r
+        if (splitArr.length ===1)
+            r = parseFloat(splitArr[0])
+        else
+            r = parseFloat(splitArr[0]/splitArr[1])
+        // let r = parseInt(count[i].innerText);
+        let newCount;
+        let newServing;
+        if (operator === "+") {
+            newServing = recentServing + 1;
+            newCount = (r / recentServing) * (newServing)
+        }
+        if (operator === "-") {
+            newServing = recentServing - 1;
+            newCount = (r / recentServing) * (newServing)
+        }
+        console.log(r, newCount)
+        r = r.toString();
+        newCount = newCount.toString();
+        console.log(r, newCount)
+        count[i].innerHTML = newCount
+        // count[i].insertAdjacentHTML("afterbegin", newServing)
+        document.querySelector(".recipe__info-data--people").innerHTML = newServing
+    }
 }
