@@ -82,7 +82,7 @@ function currentCounts() {
 function calCounts(recentServing, operator) {
 
     let count = document.querySelectorAll(".recipe__count")
-    let newCountsAr = []
+
     // state.allCountsCurrentRecipe=[]
     // console.log(Array.from(count));
     for (let i = 0; i < count.length; i++) {
@@ -113,17 +113,13 @@ function calCounts(recentServing, operator) {
             newServing = recentServing - 1;
             newCount = (r / recentServing) * (newServing)
         }
-        console.log(r, newCount)
-        // newCountsAr.push(r)
-        // state.allCountsCurrentRecipe.splice(0,state.allCountsCurrentRecipe.length, newCount)
         r = r.toString();
         newCount = newCount.toString();
-        console.log(r, newCount)
-        console.log(state)
+        console.log(r, newCount);
+        console.log(state);
+        state.allCountsCurrentRecipe[i]= newCount;
         printNewCounts(count[i], newCount, newServing)
     }
-    
-    // state.allCountsCurrentRecipe.slice(0, state.allCountsCurrentRecipe.length, newCountsAr)
 }
 
 // changed counting calCount to index.js (seperate counting and printing)
