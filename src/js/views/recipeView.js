@@ -145,35 +145,48 @@ function clearSearchResults() {
     }
 };
 
-export function calNewServings(recentServing, operator) {
-    let count = document.querySelectorAll(".recipe__count")
-    console.log(Array.from(count));
-    for (let i = 0; i < count.length; i++) {
-        const numberStr = count[i].innerText
-        const splitArr= numberStr.split("/")
-        console.log(splitArr)
-        let r
-        if (splitArr.length ===1)
-            r = parseFloat(splitArr[0])
-        else
-            r = parseFloat(splitArr[0]/splitArr[1])
-        // let r = parseInt(count[i].innerText);
-        let newCount;
-        let newServing;
-        if (operator === "+") {
-            newServing = recentServing + 1;
-            newCount = (r / recentServing) * (newServing)
-        }
-        if (operator === "-") {
-            newServing = recentServing - 1;
-            newCount = (r / recentServing) * (newServing)
-        }
-        console.log(r, newCount)
-        r = r.toString();
-        newCount = newCount.toString();
-        console.log(r, newCount)
-        count[i].innerHTML = newCount
-        // count[i].insertAdjacentHTML("afterbegin", newServing)
-        document.querySelector(".recipe__info-data--people").innerHTML = newServing
-    }
+
+
+export function printNewCounts(count, newCount, newServing) {
+    count.innerHTML = newCount;
+    // count[i].insertAdjacentHTML("afterbegin", newServing)
+    document.querySelector(".recipe__info-data--people").innerHTML = newServing
+
 }
+// export function calNewServings(recentServing, operator) {
+    //copied to base (here will be just the HTML Transfer)
+    // let count = document.querySelectorAll(".recipe__count")
+    // console.log(Array.from(count));
+    // for (let i = 0; i < count.length; i++) {
+    //     const numberStr = count[i].innerText
+    //     const splitArr = numberStr.split("/")
+    //     console.log(splitArr)
+    //     let r
+    //     if (splitArr.length === 1)
+    //         r = parseFloat(splitArr[0])
+    //     else
+    //         r = parseFloat(splitArr[0] / splitArr[1])
+    //     // let r = parseInt(count[i].innerText);
+    //     recentIngredientsObj.count.push(r);
+    //     console.log(recentIngredientsObj)
+    //     let newCount;
+    //     let newServing;
+    //     if (operator === "+") {
+    //         newServing = recentServing + 1;
+    //         newCount = (r / recentServing) * (newServing)
+    //     }
+    //     if (operator === "-") {
+    //         newServing = recentServing - 1;
+    //         newCount = (r / recentServing) * (newServing)
+    //     }
+    //     console.log(r, newCount)
+    //     r = r.toString();
+    //     newCount = newCount.toString();
+    //     console.log(r, newCount)
+    //     count[i].innerHTML = newCount
+        // count[i].insertAdjacentHTML("afterbegin", newServing)
+//         document.querySelector(".recipe__info-data--people").innerHTML = newServing
+//     }
+// }
+// create if function if / , if yes divide it,
+// create if functions to adjust the steps in the counting

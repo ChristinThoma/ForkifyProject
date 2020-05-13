@@ -2,7 +2,8 @@ import AllRecipes from "./models/search";
 import { getSearchInput, printRecipesUI, clearSearchField, addRotatingArrow, clearSearchResults } from "./views/searchView"
 import { query } from "./views/base";
 import { OneRecipe } from "./models/recipe";
-import { printRecipe, printIngredients, addRotatingArrowMainpage, calNewServings } from "./views/recipeView";
+import { printRecipe, printIngredients, addRotatingArrowMainpage, calNewServings, printNewCounts } from "./views/recipeView";
+import { printShoppingItems } from "./views/shoppingListView"
 
 
 let state = {};
@@ -33,6 +34,7 @@ async function recipeController(query, recipeId) {
     await state.clickedRecipe.getAPIrecipe(recipeId);
     printRecipe(state.clickedRecipe.responseData);
     printIngredients(state.clickedRecipe.responseData)
+    currentCounts()
 
 }
 
@@ -53,8 +55,79 @@ function startPrint() {
     clearSearchField();
 
 }
+function currentCounts() {
+    let count = document.querySelectorAll(".recipe__count")
+    state.allCountsCurrentRecipe = []
+    console.log(Array.from(count));
+    for (let i = 0; i < count.length; i++) {
+        const numberStr = count[i].innerText
+        const splitArr = numberStr.split("/")
+        console.log(splitArr)
+        let r
+        if (splitArr.length === 1)
+            r = parseFloat(splitArr[0])
+        else
+            r = parseFloat(splitArr[0] / splitArr[1])
+        // let r = parseInt(count[i].innerText);
+        // recentIngredientsObj.count.push(r);
+        // console.log(recentIngredientsObj)
+        //!!!!
+        state.allCountsCurrentRecipe.push(r)
+        console.log(state)
+        //!!!!
+    }
+}
 
 
+function calCounts(recentServing, operator) {
+
+    let count = document.querySelectorAll(".recipe__count")
+    let newCountsAr = []
+    // state.allCountsCurrentRecipe=[]
+    // console.log(Array.from(count));
+    for (let i = 0; i < count.length; i++) {
+        //     const numberStr = count[i].innerText
+        //     const splitArr = numberStr.split("/")
+        //     console.log(splitArr)
+        //     let r
+        //     if (splitArr.length === 1)
+        //         r = parseFloat(splitArr[0])
+        //     else
+        //         r = parseFloat(splitArr[0] / splitArr[1])
+        //     // let r = parseInt(count[i].innerText);
+        //     // recentIngredientsObj.count.push(r);
+        //     // console.log(recentIngredientsObj)
+        //    //!!!!
+        //     state.allCountsCurrentRecipe.push(r)
+        //     console.log(state)
+        //     //!!!!
+        //     // stop returning from here
+        let r = state.allCountsCurrentRecipe[i]
+        let newCount;
+        let newServing;
+        if (operator === "+") {
+            newServing = recentServing + 1;
+            newCount = (r / recentServing) * (newServing)
+        }
+        if (operator === "-") {
+            newServing = recentServing - 1;
+            newCount = (r / recentServing) * (newServing)
+        }
+        console.log(r, newCount)
+        // newCountsAr.push(r)
+        // state.allCountsCurrentRecipe.splice(0,state.allCountsCurrentRecipe.length, newCount)
+        r = r.toString();
+        newCount = newCount.toString();
+        console.log(r, newCount)
+        console.log(state)
+        printNewCounts(count[i], newCount, newServing)
+    }
+    
+    // state.allCountsCurrentRecipe.slice(0, state.allCountsCurrentRecipe.length, newCountsAr)
+}
+
+// changed counting calCount to index.js (seperate counting and printing)
+// seperate spliting of number (until now we split just in the function were we add servings
 
 function init() {
 
@@ -105,26 +178,31 @@ function init() {
     function clickHandler(e) {
         const target = e.target;
         const clickElement = target.closest(".btn-tiny");
-        console.log(clickElement);
-        console.log(clickElement.innerHTML)
+        const shoppingClick = target.closest(".recipe__btn");
+        console.log(shoppingClick);
         if (clickElement) {
             let recentServing = document.querySelector(".recipe__info-data--people").innerText;
             recentServing = parseInt(recentServing);
             // let operator ;
             if (clickElement.innerHTML.includes("icon-circle-with-minus")) {
-//change serving one down
+                //change serving one down
                 console.log("minus");
-                calNewServings(recentServing,"-")
-                
+                //calNewServings(recentServing, "-")
+                calCounts(recentServing, "-")
+
             };
             if (clickElement.innerHTML.includes("icon-circle-with-plus")) {
                 //change serving one up in recipe view
                 console.log("plus");
-                calNewServings(recentServing, "+")
-
+                // calNewServings(recentServing, "+")
+                calCounts(recentServing, "+")
             }
         }
+        if (shoppingClick) {
+            printShoppingItems(state.clickedRecipe.responseData)
+        }
     }
+
 }
 
 

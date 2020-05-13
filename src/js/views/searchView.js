@@ -103,7 +103,7 @@ function pagination(arr, offset, length) {
     }
     removeButtons()
     addPageButtons(offset, condition);
-    return arr.slice(start, end);
+        return arr.slice(start, end);
 
 }
 
