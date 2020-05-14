@@ -3,8 +3,8 @@ import { getSearchInput, printRecipesUI, clearSearchField, addRotatingArrow, cle
 import { query } from "./views/base";
 import { OneRecipe } from "./models/recipe";
 import { printRecipe, printIngredients, addRotatingArrowMainpage, calNewServings, printNewCounts } from "./views/recipeView";
-import { printShoppingItems } from "./views/shoppingListView"
-import {printFavorites} from "./views/favoritesView"
+import { printShoppingItems, deleteIngredient } from "./views/shoppingListView"
+import { printFavorites } from "./views/favoritesView"
 
 
 let state = {};
@@ -172,7 +172,7 @@ function init() {
         const target = e.target;
         const clickElement = target.closest(".btn-tiny");
         const shoppingClick = target.closest(".recipe__btn");
-        const loveClick= target.closest(".recipe__love");
+        const loveClick = target.closest(".recipe__love");
         if (clickElement) {
             let recentServing = document.querySelector(".recipe__info-data--people").innerText;
             recentServing = parseInt(recentServing);
@@ -193,12 +193,22 @@ function init() {
             console.log("hej")
             printShoppingItems(state.allCountsCurrentRecipe)
         }
-        if(loveClick){
+        if (loveClick) {
             printFavorites(state.clickedRecipe.responseData)
 
         }
     }
 
+    const ingrList = document.querySelector(".shopping__list");
+    ingrList.addEventListener("click", eventHandler)
+    function eventHandler(e) {
+        const target = e.target;
+        if (target.closest(".shopping__delete")) {
+            const clickElement = target.closest(".shopping__item");
+            deleteIngredient(clickElement)
+            clickElement.remove()
+        }
+    }
 }
 
 

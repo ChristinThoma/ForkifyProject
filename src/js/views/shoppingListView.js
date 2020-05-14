@@ -30,3 +30,7 @@ function calSteps(count){
         return 100
     }
 }
+
+export function deleteIngredient(clickElement){
+    console.log(clickElement)
+}
