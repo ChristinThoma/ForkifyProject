@@ -4,6 +4,7 @@ import { query } from "./views/base";
 import { OneRecipe } from "./models/recipe";
 import { printRecipe, printIngredients, addRotatingArrowMainpage, calNewServings, printNewCounts } from "./views/recipeView";
 import { printShoppingItems } from "./views/shoppingListView"
+import {printFavorites} from "./views/favoritesView"
 
 
 let state = {};
@@ -171,6 +172,7 @@ function init() {
         const target = e.target;
         const clickElement = target.closest(".btn-tiny");
         const shoppingClick = target.closest(".recipe__btn");
+        const loveClick= target.closest(".recipe__love");
         if (clickElement) {
             let recentServing = document.querySelector(".recipe__info-data--people").innerText;
             recentServing = parseInt(recentServing);
@@ -190,6 +192,10 @@ function init() {
         if (shoppingClick) {
             console.log("hej")
             printShoppingItems(state.allCountsCurrentRecipe)
+        }
+        if(loveClick){
+            printFavorites(state.clickedRecipe.responseData)
+
         }
     }
 
