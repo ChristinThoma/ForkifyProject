@@ -4,7 +4,7 @@ export function printShoppingItems(ingrCounts) {
     for (let i = 0; i < ingrName.length; i++) {
         let text = `<li class="shopping__item">
             <div class="shopping__count">
-                <input type="number" value=${ingrCounts[i]} step="100">
+                <input type="number" value=${ingrCounts[i]} step=${calSteps(ingrCounts[i])}>
             </div>
             <p class="shopping__description">${ingrName[i].innerText}</p>
             <button class="shopping__delete btn-tiny">
@@ -15,5 +15,18 @@ export function printShoppingItems(ingrCounts) {
             </li>`;
         document.querySelector(".shopping__list").insertAdjacentHTML("beforeend", text)
     }
+
 }
 // let recipeDataHtml= document.querySelectorAll(".recipe__item")
+
+function calSteps(count){
+    if(count<=1){
+        return 1
+    }
+    if (count<= 100){
+        return 10
+    }
+    else {
+        return 100
+    }
+}
