@@ -73,7 +73,6 @@ function currentCounts() {
         // console.log(recentIngredientsObj)
         //!!!!
         state.allCountsCurrentRecipe.push(r)
-        console.log(state)
         //!!!!
     }
 }
@@ -113,11 +112,8 @@ function calCounts(recentServing, operator) {
             newServing = recentServing - 1;
             newCount = (r / recentServing) * (newServing)
         }
-        r = r.toString();
-        newCount = newCount.toString();
-        console.log(r, newCount);
-        console.log(state);
-        state.allCountsCurrentRecipe[i]= newCount;
+        newCount = Number.parseFloat(newCount).toPrecision(2);
+        state.allCountsCurrentRecipe[i] = newCount;
         printNewCounts(count[i], newCount, newServing)
     }
 }
@@ -175,27 +171,25 @@ function init() {
         const target = e.target;
         const clickElement = target.closest(".btn-tiny");
         const shoppingClick = target.closest(".recipe__btn");
-        console.log(shoppingClick);
         if (clickElement) {
             let recentServing = document.querySelector(".recipe__info-data--people").innerText;
             recentServing = parseInt(recentServing);
             // let operator ;
             if (clickElement.innerHTML.includes("icon-circle-with-minus")) {
                 //change serving one down
-                console.log("minus");
                 //calNewServings(recentServing, "-")
                 calCounts(recentServing, "-")
 
             };
             if (clickElement.innerHTML.includes("icon-circle-with-plus")) {
                 //change serving one up in recipe view
-                console.log("plus");
                 // calNewServings(recentServing, "+")
                 calCounts(recentServing, "+")
             }
         }
         if (shoppingClick) {
-            printShoppingItems(state.clickedRecipe.responseData)
+            console.log("hej")
+            printShoppingItems(state.allCountsCurrentRecipe)
         }
     }
 
