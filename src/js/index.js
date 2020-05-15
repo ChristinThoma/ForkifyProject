@@ -3,7 +3,8 @@ import { getSearchInput, printRecipesUI, clearSearchField, addRotatingArrow, cle
 import { query } from "./views/base";
 import { OneRecipe } from "./models/recipe";
 import { printRecipe, printIngredients, addRotatingArrowMainpage, calNewServings, printNewCounts } from "./views/recipeView";
-import { printShoppingItems } from "./views/shoppingListView"
+import { printShoppingItems, deleteIngredient } from "./views/shoppingListView"
+import { printFavorites } from "./views/favoritesView"
 
 
 let state = {};
@@ -73,7 +74,6 @@ function currentCounts() {
         // console.log(recentIngredientsObj)
         //!!!!
         state.allCountsCurrentRecipe.push(r)
-        console.log(state)
         //!!!!
     }
 }
@@ -113,11 +113,8 @@ function calCounts(recentServing, operator) {
             newServing = recentServing - 1;
             newCount = (r / recentServing) * (newServing)
         }
-        r = r.toString();
-        newCount = newCount.toString();
-        console.log(r, newCount);
-        console.log(state);
-        state.allCountsCurrentRecipe[i]= newCount;
+        newCount = Number.parseFloat(newCount).toPrecision(2);
+        state.allCountsCurrentRecipe[i] = newCount;
         printNewCounts(count[i], newCount, newServing)
     }
 }
@@ -175,30 +172,43 @@ function init() {
         const target = e.target;
         const clickElement = target.closest(".btn-tiny");
         const shoppingClick = target.closest(".recipe__btn");
-        console.log(shoppingClick);
+        const loveClick = target.closest(".recipe__love");
         if (clickElement) {
             let recentServing = document.querySelector(".recipe__info-data--people").innerText;
             recentServing = parseInt(recentServing);
             // let operator ;
             if (clickElement.innerHTML.includes("icon-circle-with-minus")) {
                 //change serving one down
-                console.log("minus");
                 //calNewServings(recentServing, "-")
                 calCounts(recentServing, "-")
 
             };
             if (clickElement.innerHTML.includes("icon-circle-with-plus")) {
                 //change serving one up in recipe view
-                console.log("plus");
                 // calNewServings(recentServing, "+")
                 calCounts(recentServing, "+")
             }
         }
         if (shoppingClick) {
-            printShoppingItems(state.clickedRecipe.responseData)
+            console.log("hej")
+            printShoppingItems(state.allCountsCurrentRecipe)
+        }
+        if (loveClick) {
+            printFavorites(state.clickedRecipe.responseData)
+
         }
     }
 
+    const ingrList = document.querySelector(".shopping__list");
+    ingrList.addEventListener("click", eventHandler)
+    function eventHandler(e) {
+        const target = e.target;
+        if (target.closest(".shopping__delete")) {
+            const clickElement = target.closest(".shopping__item");
+            deleteIngredient(clickElement)
+            clickElement.remove()
+        }
+    }
 }
 
 
