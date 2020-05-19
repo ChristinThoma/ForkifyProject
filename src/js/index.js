@@ -194,6 +194,7 @@ function init() {
             printShoppingItems(state.allCountsCurrentRecipe)
         }
         if (loveClick) {
+            console.log(state)
             printFavorites(state.clickedRecipe.responseData)
 
         }
@@ -209,21 +210,31 @@ function init() {
             clickElement.remove()
         }
     }
+    const deleteLove = document.querySelector(".likes__list");
+    deleteLove.addEventListener("click", eventHandler)
+    function eventHandler(e) {
+        const target = e.target;
+        if (target.closest(".delete__like")) {
+            console.log("hek")
+            const clickElement = target.closest(".likes__link");
+            deleteIngredient(clickElement)
+            clickElement.remove()
+        }
+    }
 }
 
 
+    // Print one-recipe steps
+    // add eventListener, cascade to whole recipe element= closest(),(in index)
+    //import query OneRecipe
+    //click happens: 
+    // vanish grafical interface: clear recipe field, clear seaechresult highlight
+    // change CSS of clicked element(get element also from event, use closest), f.i. change color to lighter grey
+    //add arrow until API reacts, vanish arrow when recipe is printed
+    // get recipe Id from event listener (eventplace or somehting)
+    // create new OneRecipe with query, call method with ID,
+    // Get Information you need from newRecipe Object (Name, Ingredients, Photo, Link to recipe)
+    // Print these information in searchView by adding them to html
 
-// Print one-recipe steps
-// add eventListener, cascade to whole recipe element= closest(),(in index)
-//import query OneRecipe
-//click happens: 
-// vanish grafical interface: clear recipe field, clear seaechresult highlight
-// change CSS of clicked element(get element also from event, use closest), f.i. change color to lighter grey
-//add arrow until API reacts, vanish arrow when recipe is printed
-// get recipe Id from event listener (eventplace or somehting)
-// create new OneRecipe with query, call method with ID,
-// Get Information you need from newRecipe Object (Name, Ingredients, Photo, Link to recipe)
-// Print these information in searchView by adding them to html
 
-
-init()
+    init()
