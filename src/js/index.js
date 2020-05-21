@@ -122,8 +122,14 @@ function calCounts(recentServing, operator) {
 // changed counting calCount to index.js (seperate counting and printing)
 // seperate spliting of number (until now we split just in the function were we add servings
 
+function checkStorage(){
+let likeStorage= localStorage.getItem("likes");
+document.querySelector(".likes__list").insertAdjacentHTML("afterbegin", likeStorage)
+}
+
 function init() {
 
+    checkStorage()
 
     const button = document.querySelector(".search__btn");
     button.addEventListener("keypress", logKey);
@@ -157,6 +163,12 @@ function init() {
         //     recipeController(query, recipeId);
 
         // }
+    }
+
+    function storeLike(){
+        let text= document.querySelector(".likes__list").innerHTML
+        console.log(text)
+        localStorage.setItem("likes",text)
     }
 
     window.addEventListener("hashchange", e => {
@@ -196,6 +208,7 @@ function init() {
         if (loveClick) {
             console.log(state)
             printFavorites(state.clickedRecipe.responseData)
+            storeLike()
 
         }
     }
