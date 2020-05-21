@@ -122,14 +122,26 @@ function calCounts(recentServing, operator) {
 // changed counting calCount to index.js (seperate counting and printing)
 // seperate spliting of number (until now we split just in the function were we add servings
 
-function checkStorage(){
-let likeStorage= localStorage.getItem("likes");
-document.querySelector(".likes__list").insertAdjacentHTML("afterbegin", likeStorage)
+function checkStorage() {
+    let likeStorage = localStorage.getItem("likes");
+    let ingredientStorage = localStorage.getItem("ingredients")
+    document.querySelector(".likes__list").insertAdjacentHTML("afterbegin", likeStorage);
+    document.querySelector(".shopping__list").insertAdjacentHTML("afterbegin", ingredientStorage)
 }
 
+function storeLike() {
+    let text = document.querySelector(".likes__list").innerHTML
+    console.log(text)
+    localStorage.setItem("likes", text)
+}
+function storeShoppingItems() {
+    let text = document.querySelector(".shopping__list").innerHTML;
+    localStorage.setItem("ingredients", text)
+}
 function init() {
 
     checkStorage()
+
 
     const button = document.querySelector(".search__btn");
     button.addEventListener("keypress", logKey);
@@ -165,11 +177,8 @@ function init() {
         // }
     }
 
-    function storeLike(){
-        let text= document.querySelector(".likes__list").innerHTML
-        console.log(text)
-        localStorage.setItem("likes",text)
-    }
+
+
 
     window.addEventListener("hashchange", e => {
         const hashrecipe = window.location.hash;
@@ -203,7 +212,8 @@ function init() {
         }
         if (shoppingClick) {
             console.log("hej")
-            printShoppingItems(state.allCountsCurrentRecipe)
+            printShoppingItems(state.allCountsCurrentRecipe);
+            storeShoppingItems()
         }
         if (loveClick) {
             console.log(state)
@@ -237,17 +247,17 @@ function init() {
 }
 
 
-    // Print one-recipe steps
-    // add eventListener, cascade to whole recipe element= closest(),(in index)
-    //import query OneRecipe
-    //click happens: 
-    // vanish grafical interface: clear recipe field, clear seaechresult highlight
-    // change CSS of clicked element(get element also from event, use closest), f.i. change color to lighter grey
-    //add arrow until API reacts, vanish arrow when recipe is printed
-    // get recipe Id from event listener (eventplace or somehting)
-    // create new OneRecipe with query, call method with ID,
-    // Get Information you need from newRecipe Object (Name, Ingredients, Photo, Link to recipe)
-    // Print these information in searchView by adding them to html
+// Print one-recipe steps
+// add eventListener, cascade to whole recipe element= closest(),(in index)
+//import query OneRecipe
+//click happens: 
+// vanish grafical interface: clear recipe field, clear seaechresult highlight
+// change CSS of clicked element(get element also from event, use closest), f.i. change color to lighter grey
+//add arrow until API reacts, vanish arrow when recipe is printed
+// get recipe Id from event listener (eventplace or somehting)
+// create new OneRecipe with query, call method with ID,
+// Get Information you need from newRecipe Object (Name, Ingredients, Photo, Link to recipe)
+// Print these information in searchView by adding them to html
 
 
-    init()
+init()
