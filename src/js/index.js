@@ -27,7 +27,8 @@ async function searchController(query, searchInput) {
 async function recipeController(query, recipeId) {
     const queryCopy = JSON.parse(JSON.stringify(query))
     queryCopy.params.r = recipeId;
-    console.log(query)
+    console.log(recipeId);
+    console.log(query);
     console.log(queryCopy);
     addRotatingArrowMainpage();
     state.clickedRecipe = new OneRecipe(queryCopy);
@@ -54,8 +55,8 @@ function startPrint() {
     addRotatingArrow();
     searchController(query, searchInput);
     clearSearchField();
-
 }
+
 function currentCounts() {
     let count = document.querySelectorAll(".recipe__count")
     state.allCountsCurrentRecipe = []
@@ -122,25 +123,31 @@ function calCounts(recentServing, operator) {
 // changed counting calCount to index.js (seperate counting and printing)
 // seperate spliting of number (until now we split just in the function were we add servings
 
-function checkStorage() {
+function checkStorageRec() {
     let likeStorage = localStorage.getItem("likes");
-    let ingredientStorage = localStorage.getItem("ingredients")
     document.querySelector(".likes__list").insertAdjacentHTML("afterbegin", likeStorage);
+}
+function checkStorageIng() {
+    let ingredientStorage = localStorage.getItem("ingredients")
     document.querySelector(".shopping__list").insertAdjacentHTML("afterbegin", ingredientStorage)
 }
-
 function storeLike() {
     let text = document.querySelector(".likes__list").innerHTML
-    console.log(text)
     localStorage.setItem("likes", text)
 }
 function storeShoppingItems() {
     let text = document.querySelector(".shopping__list").innerHTML;
     localStorage.setItem("ingredients", text)
 }
-function init() {
 
-    checkStorage()
+
+function init() {
+    if (localStorage.likes) {
+        checkStorageRec()
+    }
+    if (localStorage.ingredients) {
+        checkStorageIng()
+    }
 
 
     const button = document.querySelector(".search__btn");
@@ -224,26 +231,48 @@ function init() {
     }
 
     const ingrList = document.querySelector(".shopping__list");
-    ingrList.addEventListener("click", eventHandler)
-    function eventHandler(e) {
+    ingrList.addEventListener("click", eventHandlerDelete)
+    function eventHandlerDelete(e) {
+        console.log("delete")
         const target = e.target;
         if (target.closest(".shopping__delete")) {
             const clickElement = target.closest(".shopping__item");
             deleteIngredient(clickElement)
             clickElement.remove()
+            // deleteStorageEl()
+            storeShoppingItems()
         }
     }
     const deleteLove = document.querySelector(".likes__list");
-    deleteLove.addEventListener("click", eventHandler)
-    function eventHandler(e) {
+    deleteLove.addEventListener("click", eventHandlerLove)
+    function eventHandlerLove(e) {
+        e.preventDefault();
         const target = e.target;
         if (target.closest(".delete__like")) {
-            console.log("hek")
             const clickElement = target.closest(".likes__link");
-            deleteIngredient(clickElement)
-            clickElement.remove()
+            deleteIngredient(clickElement);
+            clickElement.remove(clickElement);
+            storeLike();
+            //storage will be updated
+        }
+        if (target.closest(".likes__link")) {
+
+            let x = target.closest(".likes__link")
+            // console.log(target.baseURI, state);
+            // let idSplit = target.baseURI.split('#')
+            // idSplit.splice(0, 1);
+            // let recipeId = idSplit.join('#');
+            // console.log(recipeId)
+            // console.log(query)
+
+            //    let element= document.querySelector(".likes__link");
+            let recipeId = x.dataset.id;
+            recipeController(query, recipeId);
+
         }
     }
+
+
 }
 
 

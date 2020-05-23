@@ -1,7 +1,7 @@
 export function printFavorites(recipeData) {
     console.log(recipeData);
     let text = ` <li>
-    <a class="likes__link" href=#>
+    <a class="likes__link" href="" data-id=${recipeData.uri}>
     <button class="btn-tiny delete__like" style="transform: rotate(45deg)">
     <svg>
     <use href="img/icons.svg#icon-circle-with-plus"></use>
@@ -17,5 +17,6 @@ export function printFavorites(recipeData) {
     </a>
 </li>`
     document.querySelector(".likes__list").insertAdjacentHTML("afterbegin", text)
+    console.log(recipeData.uri)
 }
 
