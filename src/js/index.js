@@ -255,7 +255,7 @@ function init() {
             storeLike();
             //storage will be updated
         }
-        if (target.closest(".likes__link")) {
+        else if (target.closest(".likes__link")) {
 
             let x = target.closest(".likes__link")
             // console.log(target.baseURI, state);
